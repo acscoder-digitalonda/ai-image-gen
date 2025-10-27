@@ -1,0 +1,74 @@
+name: 'macOS Test Build (No Signing)'
+
+on:
+  pull_request: # Kích hoạt khi có Pull Request
+  push:
+    branches:
+      - main
+      - master # Kích hoạt khi push code lên nhánh chính
+
+jobs:
+  test_macos_build:
+    # BẮT BUỘC: Phải chạy trên runner macOS để build ra file .app
+    runs-on: macos-latest 
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # 1. Cài đặt Node.js
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/hydrogen
+
+      # 2. Cài đặt Rust (Cần thiết cho Tauri)
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+
+      # 3. Cache Rust/Cargo (Giúp tăng tốc build)
+      - name: Rust Cache
+        uses: Swatinem/rust-cache@v2
+
+      # 4. Cài đặt Dependencies của Frontend (Ví dụ: React, Vue, Svelte)
+      - name: Install Frontend Dependencies
+        # Đảm bảo lệnh này khớp với trình quản lý gói của bạn (npm/yarn/pnpm)
+        run: npm install 
+
+      # 5. Build Frontend (Nếu cần, Tauri cần các file tĩnh đã được build)
+      - name: Build Frontend Assets
+        # Đảm bảo lệnh này được định nghĩa trong package.json của bạn
+        # Ví dụ: "scripts": { "build": "vite build" }
+        run: npm run build
+
+      # 6. Chạy Tauri Build cho macOS
+      # Ta sử dụng tauri-action để tận dụng môi trường đã được thiết lập.
+      - name: Run Tauri Build for .app
+        uses: tauri-apps/tauri-action@v0
+        env:
+          # KHÔNG CUNG CẤP KEY/SECRET NÀO
+          # Ký mã sẽ thất bại, nhưng file .app vẫn sẽ được tạo trong Target folder
+          # Nếu bạn có lỗi như Exit Code 2, hãy thử bỏ qua bước này
+          # và dùng phương pháp ở Bước 7 bên dưới
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Cần cho tauri-action, nhưng KHÔNG để tạo release/tag
+        with:
+          args: '--bundles app' # Chỉ build .app bundle (ko tạo .dmg hay installer khác)
+          tagName: 'none'      # Ngăn tạo tag trên GitHub
+          releaseName: 'none'  # Ngăn tạo GitHub Release
+
+      # 7. TÙY CHỌN: Nếu Bước 6 bị lỗi "Exit Code 2" do tauri-action: 
+      # Hãy tắt Bước 6 và sử dụng lệnh run trực tiếp này
+      #- name: Fallback: Direct Tauri Build (If step 6 fails)
+      #  run: npm run tauri build -- --bundles app
+
+      # 8. Upload Artifacts (Đây là cách bạn lấy file .app về)
+      - name: Upload macOS App Bundle Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: macOS-Tauri-App-Test-Bundle
+          # Đường dẫn mặc định nơi Tauri lưu file .app
+          # Đổi 'app-name' thành tên ứng dụng của bạn (ví dụ: my-app.app)
+          path: src-tauri/target/release/bundle/macos/*.app
+          retention-days: 7 # Giữ file trong 7 ngày
