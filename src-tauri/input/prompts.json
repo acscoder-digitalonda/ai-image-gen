@@ -1,0 +1,9 @@
+[
+  {
+    "id": "3-refs",
+    "name": "3 Image References",
+    "systemPrompt": "Using the following reference images:\n1. Reference 1: {img_1} — use this as the subject image.\n2. Reference 2: {img_2} — use this as the background reference.\n3. Reference 3: {img_3} — use this as the style reference.\n\nCombine these references according to the instructions below:",
+    "userPrompt": "----subject------\nA charismatic male motivational speaker on stage.\nHe is smiling warmly and gesturing with his hands pressed together, while making a point. \nA lapel microphone is clipped to his jacket. \nHe look out at an audience.\n\n--background---\nThe background is filled with a huge led screen,  under dramatic stage lighting, giving a vibrant, high-energy atmosphere. \nOn screen is a close up of F22 fighter jet in flight making a turn.\nThe image is blurred, high contrast image, some led pixelation is slightly noticable in the screen.\n----styling----\nThe mood should feel inspiring, confident, and professional—like a promotional image from a large live seminar.\n--------\nShot from about eight meters away and zoomed in tightly from shoulders to above the head.\n\nThe focus is sharp on the speaker, with shallow depth of field keeping the background abstract and out of focus. \n\nThe speaker fills 1/3 of the frame, shot from a low 3/4 angle.\n\nThe left side of the image is relativly free from visual clutter.\n--\nOutput image's size : 2048X1200",
+    "dateCreated": 1717027200
+  }
+]

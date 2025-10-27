@@ -1,0 +1,56 @@
+{
+  "api_key": "AIzaSyCmoQ_gjqoIxtl2sr3Sf4euTmNpimaoEew",
+  "model_name": "gemini-2.5-flash-image",
+  "message_count": 2,
+  "messages": [
+    {
+      "id": "1761232573117",
+      "role": "System",
+      "created_at": 1761232573117,
+      "content": [
+        {
+          "kind": "text",
+          "text": "Using the following reference images:\n1. Reference 1: {img_1} — use this as the subject image.\n2. Reference 2: {img_2} — use this as the background reference.\n3. Reference 3: {img_3} — use this as the style reference.\n\nCombine these references according to the instructions below:",
+          "file_path": null,
+          "data_preview": null,
+          "data_length": null
+        }
+      ]
+    },
+    {
+      "id": "1761232573120",
+      "role": "Human",
+      "created_at": 1761232573120,
+      "content": [
+        {
+          "kind": "image",
+          "text": null,
+          "file_path": "reference_0.png",
+          "data_preview": "iVBORw0KGgoAAAANSUhEUgAAEAAAAAlgCAIAAACHc2UHAAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAA",
+          "data_length": 2939324
+        },
+        {
+          "kind": "image",
+          "text": null,
+          "file_path": "reference_1.png",
+          "data_preview": "iVBORw0KGgoAAAANSUhEUgAACDwAAAWiCAYAAAD1a2CjAAAKrWlDQ1BJQ0MgUHJvZmlsZQAASImVlwdU",
+          "data_length": 6743592
+        },
+        {
+          "kind": "image",
+          "text": null,
+          "file_path": "reference_2.png",
+          "data_preview": "iVBORw0KGgoAAAANSUhEUgAAAlgAAAGQCAIAAAD9V4nPAAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAA",
+          "data_length": 487164
+        },
+        {
+          "kind": "text",
+          "text": "----subject------\nA charismatic male motivational speaker on stage.\nHe is smiling warmly and gesturing with his hands pressed together, while making a point. \nA lapel microphone is clipped to his jacket. \nHe look out at an audience.\n\n--background---\nThe background is filled with a huge led screen,  under dramatic stage lighting, giving a vibrant, high-energy atmosphere. \nOn screen is a close up of F22 fighter jet in flight making a turn.\nThe image is blurred, high contrast image, some led pixelation is slightly noticable in the screen.\n----styling----\nThe mood should feel inspiring, confident, and professional—like a promotional image from a large live seminar.\n--------\nShot from about eight meters away and zoomed in tightly from shoulders to above the head.\n\nThe focus is sharp on the speaker, with shallow depth of field keeping the background abstract and out of focus. \n\nThe speaker fills 1/3 of the frame, shot from a low 3/4 angle.\n\nThe left side of the image is relativly free from visual clutter.\n--\nOutput image's size : 2048X1200",
+          "file_path": null,
+          "data_preview": null,
+          "data_length": null
+        }
+      ]
+    }
+  ]
+}
