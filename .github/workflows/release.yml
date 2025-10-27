@@ -1,0 +1,54 @@
+name: 'Tauri Release'
+
+on:
+  push:
+    tags:
+      - 'v*' # Kích hoạt khi có tag mới bắt đầu bằng 'v' (ví dụ: v1.0.0)
+
+jobs:
+  release:
+    # Bắt buộc phải chạy trên macOS để build được .app cho Mac
+    runs-on: macos-latest 
+    
+    # Bạn có thể dùng matrix để build cho nhiều hệ điều hành/kiến trúc cùng lúc
+    # strategy:
+    #   matrix:
+    #     platform: [macos-latest, ubuntu-latest, windows-latest]
+    #   fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Cài đặt Node.js
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/hydrogen
+
+      # Cài đặt Rust (Cần thiết cho Tauri)
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+
+      # Cache các artifacts của Rust/Cargo (giúp build nhanh hơn)
+      - name: Rust Cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          key: ${{ runner.os }}
+
+      # Cài đặt các dependencies của frontend (ví dụ: React, Vue, Svelte)
+      - name: Install frontend dependencies
+        run: npm install # Hoặc yarn install/pnpm install tùy theo project của bạn
+
+      # Build và Release ứng dụng Tauri
+      - name: Build & Release Tauri App
+        uses: tauri-apps/tauri-action@v0 # Sử dụng action chính thức của Tauri
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Dùng token mặc định để tạo Release
+          # APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }} # Cần cho Code Signing
+          # APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }} # Cần cho Code Signing
+        with:
+          # targets: 'universal-apple-darwin' # Tùy chọn: build Universal binary (x86_64 + arm64)
+          # targets: 'app' # Tùy chọn: chỉ build .app bundle
+          # bundles: 'dmg' # Tùy chọn: build cả .dmg installer
+          # Hoặc để trống, nó sẽ build tất cả các bundles đã cấu hình trong tauri.conf.json
+          args: --release
